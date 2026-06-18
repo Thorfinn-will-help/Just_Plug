@@ -1,0 +1,8 @@
+**pycache**/
+*.pyc
+.vscode/
+.git_backup/
+
+test_calibration.py
+test_serial.py
+
