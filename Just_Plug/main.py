@@ -1,9 +1,9 @@
 import sys
 import time
 
+from Backend.deadzone import apply_deadzone
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer
-
 from gui.main_window import MainWindow
 
 
@@ -36,6 +36,45 @@ def update_channels():
     if not data:
         return
 
+    channel = (
+        window.calibration_channel.currentText()
+    )
+
+    values = (
+        window.calibration_values.get(
+            channel,
+            {}
+        )
+    )
+
+    if "center" in values:
+
+        raw_value = data[channel]
+
+        deadzone_value = apply_deadzone(
+            raw_value,
+            values["center"],
+            20
+        )
+
+        window.current_raw_value = (
+            deadzone_value
+        )
+
+        window.current_raw_label.setText(
+            f"Current Raw: {deadzone_value}"
+        )
+
+    else:
+
+        window.current_raw_value = (
+            data[channel]
+        )
+
+        window.current_raw_label.setText(
+            f"Current Raw: {data[channel]}"
+        )
+
     last_data_time = time.time()
 
     window.aileron_label.setText(
@@ -54,20 +93,9 @@ def update_channels():
         f"Rudder: {data['rudder']}"
     )
 
-    selected_channel = (
-        window.calibration_channel.currentText()
-    )
-
-    window.current_raw_label.setText(
-        f"Current Raw: {data[selected_channel]}"
-    )
-    window.current_raw_value = data[selected_channel]
-
     window.signal_label.setText(
         "Signal: OK"
     )
-
-
 timer = QTimer()
 timer.timeout.connect(update_channels)
 timer.start(8)

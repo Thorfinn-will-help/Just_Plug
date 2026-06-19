@@ -1,6 +1,9 @@
 from Backend.esp32_detector import get_available_ports
 from Backend.serial_reader import SerialReader
-
+from Backend.profile_manager import (
+    save_calibration,
+    load_calibration
+)
 from PyQt6.QtWidgets import (
     QGroupBox,
     QWidget,
@@ -20,13 +23,17 @@ class MainWindow(QWidget):
             "Calibration"
         ) 
         self.calibration_channel = QComboBox()
-
         self.calibration_channel.addItems([
             "aileron",
             "elevator",
             "throttle",
             "rudder"
         ])
+        print(
+         self.calibration_channel.count()
+        )
+
+        self.calibration_values = load_calibration()
 
         self.current_raw_label = QLabel(
             "Current Raw: 0"
@@ -43,6 +50,9 @@ class MainWindow(QWidget):
         self.max_label = QLabel(
             "Stored Max: -"
         ) 
+        self.save_button = QPushButton(
+            "Save Calibration"
+        )
         self.capture_min_button = QPushButton(
             "Capture Min"
         )
@@ -58,12 +68,7 @@ class MainWindow(QWidget):
         self.reader = None
         self.current_raw_value = 0
 
-        self.calibration_values = {
-            "aileron": {},
-            "elevator": {},
-            "throttle": {},
-            "rudder": {}
-        }
+
 
         self.setWindowTitle(
             "RC Simulator Adapter"
@@ -72,6 +77,10 @@ class MainWindow(QWidget):
 
         cal_layout.addWidget(
         self.calibration_channel
+        )
+        
+        cal_layout.addWidget(
+        self.save_button
         )
 
         cal_layout.addWidget(
@@ -170,6 +179,9 @@ class MainWindow(QWidget):
         self.capture_min_button.clicked.connect(
             self.capture_min
         )
+        self.save_button.clicked.connect(
+          self.save_profile
+        )
 
         self.capture_center_button.clicked.connect(
             self.capture_center
@@ -191,6 +203,8 @@ class MainWindow(QWidget):
         )
 
         self.refresh_ports()
+        print(self.calibration_values)
+        self.update_calibration_display()
 
     def get_selected_port(self):
 
@@ -304,7 +318,10 @@ class MainWindow(QWidget):
 
         channel = self.calibration_channel.currentText()
 
-        values = self.calibration_values[channel]
+        values = self.calibration_values.get(
+            channel,
+            {}
+        )
 
         self.min_label.setText(
             f"Stored Min: {values.get('min', '-')}"
@@ -317,3 +334,13 @@ class MainWindow(QWidget):
         self.max_label.setText(
             f"Stored Max: {values.get('max', '-')}"
         )
+    
+    def save_profile(self):
+
+        save_calibration(
+        self.calibration_values
+        )
+
+        self.status_label.setText(
+            "Calibration Saved"
+        )    
