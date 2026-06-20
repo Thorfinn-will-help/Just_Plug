@@ -6,3 +6,14 @@
 test_calibration.py
 test_serial.py
 
+# Test files
+test_*.py
+TEST_*.PY
+text_deadzone.py
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Profiles (optional)
+profiles/*.json
