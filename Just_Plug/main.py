@@ -5,6 +5,7 @@ from Backend.deadzone import apply_deadzone
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer
 from gui.main_window import MainWindow
+from Backend.normalization import normalize
 
 
 app = QApplication(sys.argv)
@@ -55,6 +56,43 @@ def update_channels():
             raw_value,
             values["center"],
             20
+        )
+        normalized_value = normalize(
+            deadzone_value,
+            values["min"],
+            values["center"],
+            values["max"]
+        )
+        if (
+            channel == "aileron"
+            and
+            window.reverse_aileron.isChecked()
+        ):
+            normalized_value *= -1
+
+        if (
+            channel == "elevator"
+            and
+            window.reverse_elevator.isChecked()
+        ):
+            normalized_value *= -1
+
+        if (
+            channel == "throttle"
+            and
+            window.reverse_throttle.isChecked()
+        ):
+            normalized_value *= -1
+
+        if (
+            channel == "rudder"
+            and
+            window.reverse_rudder.isChecked()
+        ):
+            normalized_value *= -1
+        
+        window.normalized_label.setText(
+            f"Normalized: {normalized_value:.1f}"
         )
 
         window.current_raw_value = (

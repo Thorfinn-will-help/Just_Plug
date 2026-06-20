@@ -2,17 +2,17 @@
     "aileron": {
         "min": 1000,
         "max": 2000,
-        "center": 1937
+        "center": 1500
     },
     "elevator": {
-        "min": 1444,
-        "center": 1942,
+        "min": 1003,
+        "center": 1500,
         "max": 2000
     },
     "throttle": {
-        "min": 1504,
-        "max": 1997,
-        "center": 1683
+        "min": 1500,
+        "max": 1998,
+        "center": 1731
     },
     "rudder": {
         "min": 1000,

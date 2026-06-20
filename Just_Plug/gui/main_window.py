@@ -10,14 +10,32 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QPushButton,
-    QComboBox
-)
+    QComboBox,
+    QCheckBox,
+
+)   
 
 
 class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self.reverse_aileron = QCheckBox(
+         "Reverse Aileron"
+        )
+
+        self.reverse_elevator = QCheckBox(
+            "Reverse Elevator"
+        )
+
+        self.reverse_throttle = QCheckBox(
+            "Reverse Throttle"
+        )
+
+        self.reverse_rudder = QCheckBox(
+            "Reverse Rudder"
+        )
         
         self.calibration_group = QGroupBox(
             "Calibration"
@@ -37,6 +55,9 @@ class MainWindow(QWidget):
 
         self.current_raw_label = QLabel(
             "Current Raw: 0"
+        )
+        self.normalized_label = QLabel(
+            "Normalized: 0.0"
         )
 
         self.min_label = QLabel(
@@ -86,6 +107,10 @@ class MainWindow(QWidget):
         cal_layout.addWidget(
         self.current_raw_label
         )
+       
+        cal_layout.addWidget(
+            self.normalized_label
+        )
 
         cal_layout.addWidget(
         self.min_label
@@ -112,6 +137,21 @@ class MainWindow(QWidget):
 
         self.calibration_group.setLayout(
         cal_layout
+        )
+        cal_layout.addWidget(
+            self.reverse_aileron
+        )
+
+        cal_layout.addWidget(
+            self.reverse_elevator
+        )
+
+        cal_layout.addWidget(
+            self.reverse_throttle
+        )
+
+        cal_layout.addWidget(
+            self.reverse_rudder
         )
         
         layout = QVBoxLayout()
