@@ -28,3 +28,6 @@ dist/
 # Python cache
 __pycache__/
 *.pyc
+
+Release/
+*.zip
