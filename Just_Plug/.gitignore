@@ -17,3 +17,14 @@ __pycache__/
 
 # Profiles (optional)
 profiles/*.json
+
+# Build folders
+build/
+dist/
+
+# PyInstaller
+*.spec
+
+# Python cache
+__pycache__/
+*.pyc

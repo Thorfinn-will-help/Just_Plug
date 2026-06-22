@@ -33,7 +33,13 @@ def get_vjoy_value(
         )
     )
 
-    if "center" not in values:
+    if (
+        "min" not in values
+        or
+        "center" not in values
+        or
+        "max" not in values
+    ): 
         return 16383
 
     raw_value = data[channel_name]
@@ -44,6 +50,14 @@ def get_vjoy_value(
         20
     )
 
+    if (
+        "min" not in values
+        or
+        "center" not in values
+        or
+        "max" not in values
+    ):
+        return 16383
     normalized_value = normalize(
         deadzone_value,
         values["min"],
@@ -153,7 +167,13 @@ def update_channels():
         )
     )
 
-    if "center" in values:
+    if (
+        "min" in values
+        and
+        "center" in values
+        and
+        "max" in values
+    ):
 
         raw_value = data[channel]
 
@@ -162,6 +182,7 @@ def update_channels():
             values["center"],
             20
         )
+
         normalized_value = normalize(
             deadzone_value,
             values["min"],
@@ -196,17 +217,6 @@ def update_channels():
             window.reverse_rudder.isChecked()
         ):
             normalized_value *= -1
-        
-        vjoy_value = to_vjoy(
-            normalized_value
-        )
-
-#        if channel == "aileron":
-
-#           vjoy.joystick.set_axis(
-#         pyvjoy.HID_USAGE_X,
-#          vjoy_value
-#        )
 
         window.normalized_label.setText(
             f"Normalized: {normalized_value:.1f}"
@@ -222,14 +232,17 @@ def update_channels():
 
     else:
 
+        window.normalized_label.setText(
+            "Normalized: N/A"
+        )
+
         window.current_raw_value = (
             data[channel]
         )
 
         window.current_raw_label.setText(
             f"Current Raw: {data[channel]}"
-        )
-
+        )   
     last_data_time = time.time()
 
     window.aileron_label.setText(

@@ -1,11 +1,24 @@
 import json
+import os
 
 
+APP_DIR = os.path.join(
+    os.getenv("APPDATA"),
+    "JustPlug"
+)
 
-PROFILE_FILE = "profiles/calibration.json"
+PROFILE_FILE = os.path.join(
+    APP_DIR,
+    "calibration.json"
+)
 
 
 def save_calibration(data):
+
+    os.makedirs(
+        APP_DIR,
+        exist_ok=True
+    )
 
     with open(
         PROFILE_FILE,
@@ -23,7 +36,11 @@ def load_calibration():
 
     try:
 
-        print("Loading:", PROFILE_FILE)
+        print(
+            "Loading:",
+            PROFILE_FILE
+        )
+
         with open(
             PROFILE_FILE,
             "r"
@@ -31,13 +48,19 @@ def load_calibration():
 
             data = json.load(file)
 
-            print("Loaded:", data)
+            print(
+                "Loaded:",
+                data
+            )
 
             return data
 
     except Exception as e:
 
-        print("LOAD ERROR:", e)
+        print(
+            "LOAD ERROR:",
+            e
+        )
 
         return {
             "aileron": {},
