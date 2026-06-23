@@ -376,8 +376,6 @@ See the LICENSE file for details.
 
 ## Credit
 
-GitHub:
-
 Thorfinn-will-help
 
 *ChatGPT*
