@@ -379,7 +379,6 @@ See the LICENSE file for details.
 GitHub:
 
 Thorfinn-will-help
-*ChatGPT*
 
 Built for RC pilots who would rather fly than spend money on proprietary simulator adapters.
 
